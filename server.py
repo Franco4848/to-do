@@ -11,11 +11,13 @@ app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
+#----Pagina principal----#
 mysql = MySQL(app)
 @app.route('/')
 def inicio():
     return redirect(url_for('see'))
 
+#----Ver tareas----#
 @app.route('/see_tasks')
 def see():
     cur = mysql.connection.cursor()
@@ -24,17 +26,18 @@ def see():
     print(data)  
     return render_template('index.html', tasks=data)
 
-
+#----Añadir tareas----#
 @app.route('/add_task', methods=['POST'])
 def add_task():
     if request.method == 'POST':
         nombre = request.form['nombre']
         date = request.form['date']
         cur = mysql.connection.cursor()
-        cur.execute('INSERT INTO tasks (date, nombre) VALUES (%s, %s)',
-        (date, nombre))
+        cur.execute('INSERT INTO tasks (date, nombre, completed) VALUES (%s, %s, %s)',
+        (date, nombre, 0))
         mysql.connection.commit()   
-    return 'tarea'
+    return redirect(url_for('see'))
+
 
 
 if  __name__ == '__main__':
