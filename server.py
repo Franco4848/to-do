@@ -38,13 +38,14 @@ def add_task():
         mysql.connection.commit()   
     return redirect(url_for('see'))
 
-@app.route('updateTask/<int:task_id>', methods=['POST'])
+@app.route('/updateTask/<int:task_id>', methods=['POST'])
 def update_task(task_id):
     completed = request.form.get('completed') == 'on' #Obtiene el valor del checkbox on se convierte en un booleano
     cur = mysql.connection.cursor()
-    cur.execute('UPDATE tasks SER completed = %s WHERE id = %s', (1 if completed else 0, task_id))
+    cur.execute('UPDATE tasks SET completed = %s WHERE id = %s', (1 if completed else 0, task_id))
     mysql.connection.commit()
     return redirect(url_for('see'))
+
 
 
 if  __name__ == '__main__':

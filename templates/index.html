@@ -5,55 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do</title>
     <link rel="stylesheet" href="../static/stylesheet.css">
+    <style>
+        .strikethrough {
+            text-decoration: line-through;
+        }
+    </style>
+    <script>
+        function handleCheckboxChange(checkbox, taskId) {
+            const form = document.getElementById(`form-${taskId}`);
+            form.submit();
+        }
+    </script>
 </head>
 <body>
-    <div>
+    <div class="agregar">
         <table>
             <thead>
                 <tr class="encabezado">
                     <td>Fecha</td>
                     <td>Task</td>
-
                 </tr>
             </thead>
-                <tr> 
+            <tbody>
+                <tr>
                     <form action="/add_task" method="POST">
-                    <td><input type = "date" name="date"></td>
-                    <td><input type="text" name="nombre"> </td>
-                    <td> <button type="submit"> +</button></td>
-
+                        <td><input type="date" name="date"></td>
+                        <td><input type="text" name="nombre"></td>
+                        <td><button type="submit">+</button></td>
                     </form>
                 </tr>
-            <tbody>
-                <tr></tr>
             </tbody>
         </table>
     </div>
-<!-- segunda tabla -->
+
     <div>
         <table>
             <thead>
                 <tr>
                     <th>Completed</th>
                     <th>Date</th>
-                    <Th>Task</Th>
+                    <th>Task</th>
                 </tr>
             </thead>
-
             <tbody>
                 {% for task in tasks %}
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>{{task['nombre']}}</td>
-                    <td>{{task['date']}}</td>
+                <tr class="{% if task['completed'] %}strikethrough{% endif %}">
+                    <td>
+                        <form id="form-{{ task['id'] }}" action="/updateTask/{{ task['id'] }}" method="POST">
+                            <input type="checkbox" name="completed" onchange="handleCheckboxChange(this, {{ task['id'] }})" {% if task['completed'] %}checked{% endif %}>
+                        </form>
+                    </td>
+                    <td>{{ task['date'] }}</td>
+                    <td>{{ task['nombre'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-
-
-
 </body>
 </html>
