@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do</title>
     <link rel="stylesheet" href="../static/stylesheet.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         .strikethrough {
             text-decoration: line-through;
@@ -16,51 +17,63 @@
             form.submit();
         }
     </script>
+    <h1>Listado de tareas</h1>
 </head>
-<body>
-    <div class="agregar">
+<body >
+<div class="global">
+    <div class="espacio_div"> 
         <table>
             <thead>
-                <tr class="encabezado">
-                    <td>Fecha</td>
-                    <td>Task</td>
+                <tr>
+                    <td class="espacio">Fecha</td>
+                    <td class="espacio">Task</td>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr class="espacio">
                     <form action="/add_task" method="POST">
-                        <td><input type="date" name="date"></td>
-                        <td><input type="text" name="nombre"></td>
-                        <td><button type="submit">+</button></td>
+                        <td>
+                            <input class="input-box1" type="date" name="date">
+                        </td>
+                        <td>
+                            <input class="input-box1" type="text" name="nombre"  placeholder="New Task">
+                        </td>
+                        <td>
+                            <button class="input-box1" type="submit">
+                            <i class='bx bx-message-square-add bx-flip-vertical' ></i>
+                            </button>
+                        </td>
                     </form>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div>
-        <table>
-            <thead>
-                <tr>
+    <div class="espacio_div">
+        <table >
+            <thead >
+                <tr class="espacio">
                     <th>Completed</th>
-                    <th>Date</th>
-                    <th>Task</th>
+                    <th >Date</th>
+                    <th >Task</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 {% for task in tasks %}
                 <tr class="{% if task['completed'] %}strikethrough{% endif %}">
-                    <td>
+                    <td>                        
                         <form id="form-{{ task['id'] }}" action="/updateTask/{{ task['id'] }}" method="POST">
-                            <input type="checkbox" name="completed" onchange="handleCheckboxChange(this, {{ task['id'] }})" {% if task['completed'] %}checked{% endif %}>
+                            <input class="mycheck" type="checkbox" name="completed" onchange="handleCheckboxChange(this, {{ task['id'] }})" {% if task['completed'] %}checked{% endif %}>
                         </form>
+                        
                     </td>
-                    <td>{{ task['date'] }}</td>
-                    <td>{{ task['nombre'] }}</td>
+                    <td class="espacio">{{ task['date'] }}</td>
+                    <td class="espacio">{{ task['nombre'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+</div>
 </body>
 </html>
